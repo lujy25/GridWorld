@@ -21,7 +21,9 @@
   </target>
   
   <target name = "firstProject" depends = "clean">
-    <javac srcdir = "${firstProject.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${firstProject.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+      </javac>
     <java classname = "BugRunner" fork = "true">
       <classpath path = "${class.dir}"/>
       <classpath refid = "compile.path"/>
@@ -29,7 +31,9 @@
   </target>
 
   <target name = "boxBug" depends = "clean">
-    <javac srcdir = "${boxBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${boxBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
     <java classname = "BoxBugRunner" fork = "true">
       <classpath path = "${class.dir}"/>
       <classpath refid = "compile.path"/>
@@ -37,7 +41,9 @@
   </target>
 
   <target name = "circleBug" depends = "clean">
-    <javac srcdir = "${circleBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${circleBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
     <java classname = "CircleBugRunner" fork = "true">
       <classpath path = "${class.dir}"/>
       <classpath refid = "compile.path"/>
@@ -45,7 +51,9 @@
   </target>
 
   <target name = "spiralBug" depends = "clean">
-    <javac srcdir = "${spiralBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${spiralBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
     <java classname = "SpiralBugRunner" fork = "true">
       <classpath path = "${class.dir}"/>
       <classpath refid = "compile.path"/>
@@ -53,7 +61,9 @@
   </target>
 
   <target name = "zBug" depends = "clean">
-    <javac srcdir = "${zBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${zBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
     <java classname = "ZBugRunner" fork = "true">
       <classpath path = "${class.dir}"/>
       <classpath refid = "compile.path"/>
@@ -61,7 +71,9 @@
   </target>
 
    <target name = "dancingBug" depends = "clean">
-    <javac srcdir = "${dancingBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${dancingBug.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
     <java classname = "DancingBugRunner" fork = "true">
       <classpath path = "${class.dir}"/>
       <classpath refid = "compile.path"/>
