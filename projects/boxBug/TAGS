@@ -1,0 +1,11 @@
+
+BoxBug.java,205
+public class BoxBug 25,825
+    private int steps;BoxBug.steps27,859
+    private int sideLength;BoxBug.sideLength28,882
+    public BoxBug(BoxBug.BoxBug34,1036
+    public void act(BoxBug.act43,1192
+
+BoxBugRunner.java,87
+public class BoxBugRunner28,856
+    public static void main(BoxBugRunner.main30,884

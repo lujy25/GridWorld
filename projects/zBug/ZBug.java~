@@ -1,0 +1,37 @@
+import info.gridworld.actor.Bug;
+import info.gridworld.grid.Location;
+public class ZBug extends Bug
+{
+    private int steps;
+    private int sideLength;
+    
+    public ZBug(int length)
+    {
+        steps = 0;
+        sideLength = length;
+	this.setDirection(Location.EAST);
+    }
+    public void stop() {
+	;
+    }
+    public void act()
+    {
+        if (steps < sideLength) {
+            move();
+            steps++;
+        } else if (!canMove()) {
+	    turn();
+	} else {
+	    switch(this.getDirection()) {
+	    case Location.EAST:
+		this.setDirection(Location.SOUTHWEST);
+		break;
+	    case Location.SOUTHWEST:
+		this.setDirection(Location.EAST);
+		break;
+	    
+	    }
+            steps = 0;
+        }
+    }
+}
