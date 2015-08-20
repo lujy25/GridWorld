@@ -1,17 +1,27 @@
+/*
+ *Copyright(c) 
+ *@author lujianye
+ *@date 2015/08/20
+ */
 import info.gridworld.grid.*;
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.grid.Location;
+
 import java.awt.Color;
-import java.util.*;
-public class DancingBugRunner
+
+
+public class ZBugRunner
 {
+//program entrance 
     public static void main(String[] args)
     {
+//create a world for the zBug to run
         ActorWorld world = new ActorWorld();
-	Integer[] steps = new Integer[] {3,5,7,0,2,4,7,4,1};
-	DancingBug alice = new DancingBug(new ArrayList<Integer>(Arrays.asList(steps)));
+
+        ZBug alice = new ZBug(4);
         alice.setColor(Color.ORANGE);
-        world.add(new Location(4, 3), alice);
+//set origin location
+        world.add(new Location(4, 1), alice);
         world.show();
     }
 }
