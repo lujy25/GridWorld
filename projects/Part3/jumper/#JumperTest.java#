@@ -1,0 +1,82 @@
+import static org.junit.Assert.*;
+import org.junit.*;
+import info.gridworld.grid.*;
+import info.gridworld.actor.*;
+public class JumperTest {
+    private static Jumper jumper = new Jumper();
+    @BeforeClass
+	public void beforeTest() {
+	ActorWorld world = new ActorWorld(new BoundedGrid<Actor>(10,10));
+	world.add(new Location(4,1),jumper);
+    }
+    
+    @Test
+	public void testMove() {
+	//origin locatioin
+	jumper.moveTo(0,0);
+	//test move east
+	jumper.setDirection(Location.EAST);
+	jumper.move();
+	assertEquals(new Location(0,2),jumper.getLocation());
+	//test move south
+	jumper.setDirection(Location.SOUTH);
+	jumper.move();
+	assertEquals(new Location(2,2),jumper.getLocation());
+	//test move west
+	jumper.setDirection(Location.WEST);
+	jumper.move();
+	assertEquals(new Location(0,2),jumper.getLocation());
+	//test move north
+	jumper.setDirection(Location.NORTH);
+	jumper.move();
+	assertEquals(new Location(0,0),jumper.getLocation());
+	//test move south-east
+	jumper.setDirection(Location.SOUTHEAST);
+	jumper.move();
+	assertEquals(new Location(2,2),jumper.getLocation());
+	//test move south-west
+jumper.setDirection(Location.NORTH);
+	jumper.move();
+	assertEquals(new Location(0,0),jumper.getLocation());
+
+jumper.setDirection(Location.NORTH);
+	jumper.move();
+	assertEquals(new Location(0,0),jumper.getLocation());
+
+jumper.setDirection(Location.NORTH);
+	jumper.move();
+	assertEquals(new Location(0,0),jumper.getLocation());
+
+jumper.setDirection(Location.NORTH);
+	jumper.move();
+	assertEquals(new Location(0,0),jumper.getLocation());
+
+
+	Location oldLocation = jumper.getLocation();
+	Location next = oldLocation.getAdjacentLocation(jumper.getDirection());
+	Location desLocation = next.getAdjacentLocation(jumper.getDirection());
+	Grid<Actor> gr = jumper.getGrid();
+	if (gr.isValid(desLocation)) {
+	    jumper.move();
+	    assertEquals(desLocation,jumper.getLocation());
+	} else{
+	    jumper.move();
+	    assertEquals(null,jumper.getLocation());
+	
+	}
+	    
+    }
+    @Test
+	public void testCanMove() {
+	Location loc = jumper.getLocation();
+	Location next = loc.getAdjacentLocation(jumper.getDirection());
+	Location next_next = next.getAdjacentLocation(jumper.getDirection());
+	Grid<Actor> gr = jumper.getGrid();
+	if (!gr.isValid(next_next)) {
+	    assertEquals(false,jumper.canMove());
+	} else {
+	    Actor neighbor = gr.get(next_next);
+	    assertEquals(neighbor == null, jumper.canMove());
+	}
+    }
+}

@@ -5,6 +5,7 @@
   <property name = "boxBug.dir" location = "boxBug"/>
   <property name = "lib.dir" location = "lib"/>
   <property name = "class.dir" location = "class"/>
+  <property name = "reports.dir" location = "reports"/>
   <path id = "compile.path">
     <fileset dir = "${lib.dir}">
       <include name = "**/*.jar"/>
@@ -20,11 +21,12 @@
       </fileset>
     </copy>
   </target>
-
-  <target name = "jumper" depends = "init">
+  <target name = "compile" depends = "init">
     <javac srcdir = "${jumper.dir}" destdir = "${class.dir}/jumper" classpathref = "compile.path" includeantruntime = "true">
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
+  </target>
+  <target name = "jumper" depends = "compile">
     <java classname = "JumperRunner" fork = "true">
       <classpath path = "${class.dir}/jumper"/>
       <classpath refid = "compile.path"/>
@@ -39,5 +41,23 @@
       <classpath path = "${class.dir}/boxBug"/>
       <classpath refid = "compile.path"/>
     </java>
+  </target>
+  <target name = "junit" depends = "compile">
+    <junit haltonfailure = "false" printsummary = "true" fork = "true">
+      <classpath refid = "compile.path"/>
+      <formatter type = "xml"/>
+      <batchtest todir = "${reports.dir}" unless = "testcase">
+	<fileset dir = "${class.dir}/jumper">
+	  <include name = "**/*Test.class"/>
+	</fileset>
+      </batchtest>
+      <classpath path = "${class.dir}/jumper"/>
+    </junit>
+    <junitreport todir="${reports.dir}">
+      <fileset dir="${reports.dir}">
+	<include name="TEST-*.xml" />
+      </fileset>
+      <report format="frames" todir="${reports.dir}" />
+    </junitreport>
   </target>
 </project>
