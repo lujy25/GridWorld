@@ -3,7 +3,7 @@
   <description>run the bugs </description>
   <property name = "src.dir" location = "src"/>
   <property name = "lib.dir" location = "../lib"/>
-  <property name = "class.dir" location = "class"/>
+  <property name = "build.dir" location = "../build"/>
   <path id = "compile.path">
     <fileset dir = "${lib.dir}">
       <include name = "**/*.jar"/>
@@ -11,22 +11,22 @@
   </path>
   
   <target name = "init">
-    <delete dir = "${class.dir}"/>
-    <mkdir dir = "${class.dir}"/>
-    <copy todir="${class.dir}/myjumper">
+    <delete dir = "${build.dir}"/>
+    <mkdir dir = "${build.dir}"/>
+    <copy todir="${build.dir}/Jumper_src/src">
       <fileset dir = "${src.dir}">
 	<include name = "*.gif"/>
       </fileset>
     </copy>
   </target>
   <target name = "compile" depends = "init">
-    <javac srcdir = "${src.dir}" destdir = "${class.dir}" classpathref = "compile.path" includeantruntime = "true">
+    <javac srcdir = "${src.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
   </target>
   <target name = "run" depends = "compile">
-    <java classname = "myjumper.JumperRunner" fork = "true">
-      <classpath path = "${class.dir}"/>
+    <java classname = "Jumper_src.src.JumperRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
       <classpath refid = "compile.path"/>
     </java>
   </target>
