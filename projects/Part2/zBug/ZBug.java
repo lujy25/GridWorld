@@ -9,7 +9,7 @@ public class ZBug extends Bug
 {
     private int steps;
     private int sideLength;
- //recorde the state whether the bug complement the 'z' painting
+    //recorde the state whether the bug complement the 'z' painting
     private boolean paintOk;
     public ZBug(int length)
     {
@@ -25,16 +25,16 @@ public class ZBug extends Bug
             move();
             steps++;
         } else if (!canMove() || paintOk) {
-//encounter something or paint complemently,stop
+	    //encounter something or paint complemently,stop
 	    ;
 	} else {
 	    switch(this.getDirection()) {
 	    case Location.EAST:
-;//change the direction for painting 'z'
-		this.setDirection(Location.SOUTHWEST)
+		;//change the direction for painting 'z'
+		this.setDirection(Location.SOUTHWEST);
 		break;
 	    case Location.SOUTHWEST:
-//change the direction for painting 'z'
+		//change the direction for painting 'z'
 		this.setDirection(Location.EAST);
 		paintOk = true;
 		break;

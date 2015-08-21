@@ -1,0 +1,54 @@
+<?xml version = "1.0"?>
+<project name = "JumperTest" default = "junit" basedir = ".">
+  <description>run the bugs </description>
+  <property name = "jumper.dir" location = "../Jumper_src"/>
+  <property name = "jumperSrc.dir" location = "${jumper.dir}/src"/>
+  <property name = "lib.dir" location = "../lib"/>
+  <property name = "class.dir" location = "${jumper.dir}/class"/>
+  <property name = "reports.dir" location = "reports"/>
+  <path id = "compile.path">
+    <fileset dir = "${lib.dir}">
+      <include name = "**/*.jar"/>
+    </fileset>
+  </path>
+  
+  <target name = "init">
+    <delete dir = "${class.dir}"/>
+    <mkdir dir = "${class.dir}"/>
+    <copy todir="${class.dir}">
+      <fileset dir = "${jumper.dir}">
+	<include name = "**/*.gif"/>
+      </fileset>
+    </copy>
+  </target>
+  <target name = "compile" depends = "init">
+    <javac srcdir = "${jumperSrc.dir}" destdir = "${class.dir}/src" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+  </target>
+  <target name = "jumper" depends = "compile">
+    <java classname = "JumperRunner" fork = "true">
+      <classpath path = "${class.dir}/jumper"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+
+  <target name = "junit" depends = "compile">
+    <junit haltonfailure = "false" printsummary = "true" fork = "true">
+      <classpath refid = "compile.path"/>
+      <formatter type = "xml"/>
+      <batchtest todir = "${reports.dir}" unless = "testcase">
+	<fileset dir = "${class.dir}/jumper">
+	  <include name = "**/*Test.class"/>
+	</fileset>
+      </batchtest>
+      <classpath path = "${class.dir}/jumper"/>
+    </junit>
+    <junitreport todir="${reports.dir}">
+      <fileset dir="${reports.dir}">
+	<include name="TEST-*.xml" />
+      </fileset>
+      <report format="frames" todir="${reports.dir}" />
+    </junitreport>
+  </target>
+</project>

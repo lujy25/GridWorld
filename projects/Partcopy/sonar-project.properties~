@@ -1,5 +1,5 @@
-sonar.projectKey=002
-sonar.projectName=Bugs
+sonar.projectKey=Jumper_test
+sonar.projectName=Jumper_test
 sonar.projectVersion=1.0
 sonar.sourceEncoding=UTF-8
 sonar.modules=java-module
@@ -8,4 +8,5 @@ java-module.sonar.projectName=Java Module
 java-module.sonar.lannguage=java
 
 java-module.sonar.sources=.
-java-module.sonar.projectBaseDir=Part2
+java-module.sonar.projectBaseDir=Jumper_test
+
