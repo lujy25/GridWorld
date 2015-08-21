@@ -1,10 +1,12 @@
 <?xml version = "1.0"?>
-<project name = "JumperRunner" default = "junit" basedir = ".">
+<project name = "JumperTest" default = "junit" basedir = ".">
   <description>run the bugs </description>
-  <property name = "jumper.dir" location = "jumper"/>
-  <property name = "lib.dir" location = "lib"/>
-  <property name = "class.dir" location = "class"/>
-  <property name = "reports.dir" location = "reports"/>
+  <property name = "jumper.dir" location = "../Jumper_src"/>
+  <property name = "jumperSrc.dir" location = "${jumper.dir}/src"/>
+  <property name = "jumperTest.dir" location = "test"/>
+  <property name = "lib.dir" location = "../lib"/>
+  <property name = "build.dir" location = "../build"/>
+  <property name = "reports.dir" location = "${build.dir}/reports"/>
   <path id = "compile.path">
     <fileset dir = "${lib.dir}">
       <include name = "**/*.jar"/>
@@ -12,24 +14,21 @@
   </path>
   
   <target name = "init">
-    <delete dir = "${class.dir}"/>
-    <mkdir dir = "${class.dir}"/>
-    <copy todir="${class.dir}">
-      <fileset dir = ".">
-	<include name = "**/*.gif"/>
+    <delete dir = "${reports.dir}"/>
+    <delete dir = "${build.dir}"/>
+    <mkdir dir = "${reports.dir}"/>
+    <mkdir dir = "${build.dir}"/>
+    <copy todir="${build.dir}/Jumper_src/src">
+      <fileset dir = "${jumperSrc.dir}">
+	<include name = "*.gif"/>
       </fileset>
     </copy>
   </target>
   <target name = "compile" depends = "init">
-    <javac srcdir = "${jumper.dir}" destdir = "${class.dir}/jumper" classpathref = "compile.path" includeantruntime = "true">
+    <javac srcdir = "${jumperSrc.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true"/>
+    <javac srcdir = "${jumperTest.dir}" destdir= "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
-  </target>
-  <target name = "jumper" depends = "compile">
-    <java classname = "JumperRunner" fork = "true">
-      <classpath path = "${class.dir}/jumper"/>
-      <classpath refid = "compile.path"/>
-    </java>
   </target>
 
   <target name = "junit" depends = "compile">
@@ -37,11 +36,11 @@
       <classpath refid = "compile.path"/>
       <formatter type = "xml"/>
       <batchtest todir = "${reports.dir}" unless = "testcase">
-	<fileset dir = "${class.dir}/jumper">
+	<fileset dir = "${build.dir}">
 	  <include name = "**/*Test.class"/>
 	</fileset>
       </batchtest>
-      <classpath path = "${class.dir}/jumper"/>
+      <classpath path = "${build.dir}"/>
     </junit>
     <junitreport todir="${reports.dir}">
       <fileset dir="${reports.dir}">
