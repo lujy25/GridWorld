@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jar" basedir="." default="jar">
+  <target name="init">
+    <delete dir="jar"/>
+    <mkdir dir="jar"/>
+  </target>
+  <target name="jar" depends="init">
+    <jar destfile="jar/gridworld.jar" basedir="info">
+      <manifest>
+	<attribute name="Build-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+</project>
