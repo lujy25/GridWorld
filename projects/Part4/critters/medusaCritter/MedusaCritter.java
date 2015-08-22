@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.lang.Math.*;
 public class MedusaCritter extends Critter
 {
     private Actor prey = null;
+    public MedusaCritter(Color color) {
+	setColor(color);
+    }
+    public MedusaCritter() {
+	setColor(Color.RED);
+    }
     public void processActors(ArrayList<Actor> actors)
     {
 	for (Actor actor : actors) {
@@ -25,10 +32,9 @@ public class MedusaCritter extends Critter
     private boolean searchPrey() {
 	boolean exitPrey = false;
 	if (prey == null || prey.getGrid() == null) {
-	    System.out.println("check");
 	    Grid gr = getGrid();
 	    ArrayList<Location> preyLocations = gr.getOccupiedLocations();
-	    System.out.println("size:" + preyLocations.size());
+	    Collections.shuffle(preyLocations);
 	    for (Location loc : preyLocations) {
 		Actor actor = (Actor) gr.get(loc);
 		if (!(actor instanceof Rock) && !(actor == this) && !(actor instanceof Flower)) {
@@ -55,14 +61,13 @@ public class MedusaCritter extends Critter
     
     public Location selectMoveLocation(ArrayList<Location> locs)
     {
-	if (searchPrey() == false) {
-	    System.out.println("no prey");
+
+	if (searchPrey() == false || locs.size() == 0) {
 	    return super.selectMoveLocation(locs);
 	}
-	System.out.println(prey.toString());
 	Location currentLocation = getLocation();
 	Location preyLocation = prey.getLocation();
-	Collections.sort(locs, new SortByDirecion(currentLocation,preyLocation));
+	Collections.sort((List<Location>)locs, new SortByDirecion(currentLocation,preyLocation));
         return locs.get(0);
     }
 }
