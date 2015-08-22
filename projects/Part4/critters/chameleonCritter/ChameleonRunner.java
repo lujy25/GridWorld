@@ -15,7 +15,7 @@
  * @author Barbara Cloud Wells
  * @author Cay Horstmann
  */
-
+package chameleonCritter;
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Rock;
 import info.gridworld.grid.Location;

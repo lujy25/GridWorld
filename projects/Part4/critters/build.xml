@@ -1,0 +1,118 @@
+<?xml version = "1.0"?>
+<project name = "CrittesRunner" default = "compile" basedir = ".">
+  <description>run the critters </description>
+  <property name = "critters.dir" location = "."/>
+  <property name = "chameleonCritter.dir" location = "chameleonCritter"/>
+  <property name = "crabCritter.dir" location = "crabCritter"/>
+  <property name = "chameleonKid.dir" location = "chameleonKid"/>
+  <property name = "rockHound.dir" location = "rockHound"/>
+  <property name = "quickCrab.dir" location = "quickCrab"/>
+  <property name = "blusterCritter.dir" location = "blusterCritter"/>
+  <property name = "kingCrab.dir" location = "kingCrab"/>
+  <property name = "medusaCritter.dir" location = "medusaCritter"/>
+  <property name = "lib.dir" location = "../lib"/>
+  <property name = "build.dir" location = "../build"/>
+  <path id = "compile.path">
+    <fileset dir = "${lib.dir}">
+      <include name = "**/*.jar"/>
+    </fileset>
+  </path>
+  
+  <target name = "init">
+    <delete dir = "${build.dir}"/>
+    <mkdir dir = "${build.dir}"/>
+    <copy todir = "${build.dir}">
+      <fileset dir = "${critters.dir}">
+	<include name = "**/*.gif"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name = "chameleonCritter" depends = "init">
+    <javac srcdir = "${chameleonCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "chameleonCritter.ChameleonRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+
+  <target name = "crabCritter" depends = "init">
+    <javac srcdir = "${crabCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "crabCritter.CrabRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+  
+  <target name = "chameleonKid" depends = "init">
+    <javac srcdir = "${chameleonCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <javac srcdir = "${chameleonKid.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "chameleonKid.ChameleonKidRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+  <target name = "rockHound" depends = "init">
+    <javac srcdir = "${rockHound.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "rockHound.RockHoundRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+
+  <target name = "blusterCritter" depends = "init">
+    <javac srcdir = "${blusterCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "blusterCritter.BlusterRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+
+  <target name = "quickCrab" depends = "init">
+    <javac srcdir = "${crabCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <javac srcdir = "${quickCrab.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "quickCrab.QuickCrabRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+
+  <target name = "kingCrab" depends = "init">
+    <javac srcdir = "${crabCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <javac srcdir = "${kingCrab.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "kingCrab.KingCrabRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+
+  <target name = "medusaCritter" depends = "init">
+    <javac srcdir = "${medusaCritter.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "medusaCritter.MedusaRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+</project>

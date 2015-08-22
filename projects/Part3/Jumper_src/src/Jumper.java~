@@ -3,7 +3,7 @@
  *@author lujianye
  *@date 2015/08/21
  */
-package src;
+package Jumper_src.src;
 import info.gridworld.grid.*;
 import info.gridworld.actor.*;
 import java.util.*;

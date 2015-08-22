@@ -18,9 +18,9 @@
     <delete dir = "${build.dir}"/>
     <mkdir dir = "${reports.dir}"/>
     <mkdir dir = "${build.dir}"/>
-    <copy todir="${build.dir}/Jumper_src/src">
-      <fileset dir = "${jumperSrc.dir}">
-	<include name = "*.gif"/>
+    <copy todir="${build.dir}">
+      <fileset dir = "${jumper.dir}">
+	<include name = "**/*.gif"/>
       </fileset>
     </copy>
   </target>

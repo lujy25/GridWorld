@@ -1,5 +1,5 @@
-package test;
-import src.*;
+package Jumper_test.test;
+import Jumper_src.src.*;
 import static org.junit.Assert.*;
 import org.junit.*;
 import info.gridworld.grid.*;

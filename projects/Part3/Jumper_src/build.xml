@@ -13,9 +13,9 @@
   <target name = "init">
     <delete dir = "${build.dir}"/>
     <mkdir dir = "${build.dir}"/>
-    <copy todir="${build.dir}/Jumper_src/src">
-      <fileset dir = "${src.dir}">
-	<include name = "*.gif"/>
+    <copy todir="${build.dir}">
+      <fileset dir = ".">
+	<include name = "**/*.gif"/>
       </fileset>
     </copy>
   </target>
@@ -25,7 +25,7 @@
     </javac>
   </target>
   <target name = "run" depends = "compile">
-    <java classname = "Jumper_src.src.JumperRunner" fork = "true">
+    <java classname = "src.JumperRunner" fork = "true">
       <classpath path = "${build.dir}"/>
       <classpath refid = "compile.path"/>
     </java>

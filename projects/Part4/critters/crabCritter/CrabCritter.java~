@@ -15,7 +15,7 @@
  * @author Barbara Cloud Wells
  * @author Cay Horstmann
  */
-
+package critters.crabCritter;
 import info.gridworld.actor.Actor;
 import info.gridworld.actor.Critter;
 import info.gridworld.grid.Grid;

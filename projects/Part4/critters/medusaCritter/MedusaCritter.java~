@@ -1,0 +1,70 @@
+package medusaCritter;
+import info.gridworld.actor.*;
+import info.gridworld.grid.Location;
+import java.util.ArrayList;
+import java.awt.Color;
+import java.util.Collections;
+import java.util.Comparator;
+import java.lang.Math.*;
+public class MedusaCritter extends Critter
+{
+    private Actor prey = null;
+    public void processActors(ArrayList<Actor> actors)
+    {
+	for (Actor actor : actors) {
+	    if (actor == prey && actor != null) {
+		Color color = actor.getColor();
+		Location loc = actor.getLocation();
+		actor.removeSelfFromGrid();
+		Rock rock = new Rock(color);
+		getGrid().add(loc,rock);
+	    }
+	}
+    }
+    private boolean searchPrey() {
+	boolean exitPrey = false;
+	if (prey == null || prey.getGrid() == null) {
+	    Grid gr = getGrid();
+	    ArrayList<Location> preyLocations = gr.getOccupiedLocations();
+	    for (Location loc : preyLocations) {
+		Actor actor = gr.get(loc);
+		if ((!actor instanceof Rock)) {
+		    prey = actor;
+		    exitPrey = true;
+		    break;
+		}
+	    }
+	}
+	return exitPrey;
+    }
+   
+    
+    public Location selectMoveLocation(ArrayList<Location> locs)
+    {
+	if (searchPrey() == false) {
+	    super().selectMoveLocation();
+	    return;
+	}
+	Location currentLocation = getLocation();
+	Location preyLocation = prey.getLocation();
+	Collections.sort(locs, new SortByDirecion(currentLocation,preyLocations));
+        return locs.get(0);
+    }
+}
+class SortByDirecion {
+    private Location currentLocation = null;
+    private Location preyLocations = null;
+    public SortByDirecion(Location current, Location prey) {
+	currentLocation = current;
+	preyLocation = prey;
+    }
+    public int compare(Object o1, Object o2) {
+	Location l1 = (Location) o1;
+	Location l2 = (Location) o2;
+	int l1_degree = Math.abs(currentLocation.getDirectionToward(l1) - currentLocation.getDirectionToward(preyLocations));
+	int l2_degree = Math.abs(currentLocation.getDirectionToward(l2) - currentLocation.getDirectionToward(preyLocations));
+	return l1_degree - l2_degree;
+    }
+}
+	
+	
