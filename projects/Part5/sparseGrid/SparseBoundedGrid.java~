@@ -1,0 +1,121 @@
+package sparseGrid;
+import info.gridworld.grid.*;
+import info .gridworld.actor.*;
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Iterator;
+public class SparseBoundedGrid extends AbstractGrid<Actor>
+{
+    private LinkedList<OccupantInCol>[] sparseArray; // the array storing the grid elements
+    private int rows;
+    private int cols;
+    public SparseBoundedGrid(int rows, int cols)
+	{
+	    if (rows <= 0)
+		throw new IllegalArgumentException("rows <= 0");
+	    if (cols <= 0)
+		throw new IllegalArgumentException("cols <= 0");
+	    this.rows = rows;
+	    this.cols = cols;
+	    sparseArray = new LinkedList[rows];
+	    for (int row = 0 ; row < rows ; ++row) {
+		sparseArray[row] = new LinkedList<>();
+	    }
+	}
+
+    public int getNumRows()
+    {
+        return this.rows;
+    }
+
+    public int getNumCols()
+    {
+	return this.cols;
+    }
+    public boolean isValid(Location loc)
+    {
+        return 0 <= loc.getRow() && loc.getRow() < getNumRows()
+	    && 0 <= loc.getCol() && loc.getCol() < getNumCols();
+    }
+    public ArrayList<Location> getOccupiedLocations()
+    {
+        ArrayList<Location> theLocations = new ArrayList<Location>();
+	
+        // Look at all grid locations.
+	for (int row = 0 ; row < getNumRows() ; ++row) {
+	    LinkedList<OccupantInCol> rowOccupants = sparseArray[row];
+	    if (rowOccupants != null) {
+		for (OccupantInCol occupantInCol : rowOccupants) {
+		    Location loc = new Location(row, occupantInCol.getCol());
+		    theLocations.add(loc);
+		}
+	    }
+	}
+          
+
+        return theLocations;
+    }
+
+    public Actor get(Location loc)
+    {
+        if (!isValid(loc))
+            throw new IllegalArgumentException("Location " + loc
+					       + " is not valid");
+	LinkedList<OccupantInCol> rowOccupants = sparseArray[loc.getRow()];
+	if (rowOccupants != null) {
+	    for (OccupantInCol occupantInCol : rowOccupants) {
+		if (occupantInCol.getCol() == loc.getCol()) {
+		    return occupantInCol.getOccupant();
+		}
+	    }
+	}
+        return null;
+    }
+
+    public Actor put(Location loc, Actor obj)
+    {
+        if (!isValid(loc))
+            throw new IllegalArgumentException("Location " + loc
+					       + " is not valid");
+        if (obj == null)
+            throw new NullPointerException("obj == null");
+	Actor oldOccupant = remove(loc);
+	// Add the object to the grid.
+	sparseArray[loc.getRow()].add(new OccupantInCol(obj, loc.getCol()));
+	return oldOccupant;
+    }
+
+    public Actor remove(Location loc)
+    {
+        if (!isValid(loc))
+            throw new IllegalArgumentException("Location " + loc
+					       + " is not valid");
+	Actor actor = get(loc);
+	if (actor == null) return null;
+	LinkedList<OccupantInCol> rowOccupants = sparseArray[loc.getRow()];
+	if (rowOccupants != null) {
+	    Iterator<OccupantInCol> it = rowOccupants.iterator();
+	    while(it.hasNext()) {
+		if (it.next().getCol() == loc.getCol()) {
+		    it.remove();
+		    break;
+		}
+	    }
+	}
+	return actor;
+    }
+    public class OccupantInCol {
+	private Actor occupant;
+	private  int col;
+	public OccupantInCol(Actor actor, int col) {
+	    occupant = actor;
+	    this.col = col;
+	}
+	public Actor getOccupant() {
+	    return occupant;
+	}
+	public int getCol() {
+	    return col;
+	}
+    }
+}

@@ -1,0 +1,28 @@
+<?xml version = "1.0"?>
+<project name = "SparseGridRunner" default = "sparseGrid" basedir = ".">
+  <description>run the critters </description>
+  <property name = "sparseCrid.dir" location = "sparseGrid"/>
+  <property name = "chameleonKid.dir" location = "chameleonKid"/>
+  <property name = "lib.dir" location = "lib"/>
+  <property name = "build.dir" location = "build"/>
+  <path id = "compile.path">
+    <fileset dir = "${lib.dir}">
+      <include name = "**/*.jar"/>
+    </fileset>
+  </path>
+  
+  <target name = "init">
+    <delete dir = "${build.dir}"/>
+    <mkdir dir = "${build.dir}"/>
+  </target>
+
+  <target name = "sparseGrid" depends = "init">
+    <javac srcdir = "${sparseCrid.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "sparseGrid.SparseGridRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+</project>
