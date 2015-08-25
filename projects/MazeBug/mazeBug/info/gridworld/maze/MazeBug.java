@@ -153,6 +153,8 @@ public class MazeBug extends Bug {
     }
     public Location selectMoveLocation(ArrayList<Location> locs)
     {
+	ArrayList<Map, Entry<Integer, Integer>> maplist = 
+	    new ArrayList<Map.Entry<Integer, Integer>>(dirStep.entrySet());
 	Collections.sort(dirStep, new Comparator<Map.Entry<Integer, Integer>>() {
 		public int compara(Map.Entry<Integer, Integer> obj1, Map.Entry<Integer, Integer> obj2) {
 		    return obj1.getValue() > obj2.getValue();
