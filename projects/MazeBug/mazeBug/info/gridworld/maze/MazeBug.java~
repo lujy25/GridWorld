@@ -10,14 +10,20 @@ import java.util.Random;
 import java.util.Stack;
 import javax.swing.JOptionPane;
 import java.util.HashSet;
-
+import java.util.ArrayList;  
+import java.util.Collections;  
+import java.util.Comparator;  
+import java.util.List;  
+import java.util.Map;  
+import java.util.Map.Entry;  
+import java.util.HashMap; 
 public class MazeBug extends Bug {
     public Location next;
     public Location last;
     public boolean isEnd = false;
     public Stack<Location> crossLocation = new Stack<Location>();
     public Integer stepCount = 0;
-    private Integer[] dirsRat;
+    private HashMap<Integer, Integer> dirStep;
     private boolean hasShown = false;//final message has been shown
     private HashSet<Location> hasVisited;
     /**
@@ -28,13 +34,13 @@ public class MazeBug extends Bug {
      */
     public MazeBug() {
 	setColor(Color.GREEN);
-	//last = new Location(0, 0);
+	last = new Location(0, 0);
 	Location loc = getLocation();
 	hasVisited = new HashSet<Location>();
 	hasVisited.add(loc);
-	dirsRat = new Integer[4];
-	for (int i = 0 ; i < 4 ; ++i) {
-	    dirsRat[i] = 1;
+	dirStep = new HashMap<Integer, Integer>();
+	for (int dir = 0 ; dir < Location.FULL_CIRCLE ; dir += Location.RIGHT) {
+	    dirStep.put(dir,1);
 	}
     }
 
@@ -124,11 +130,16 @@ public class MazeBug extends Bug {
 	    return;
 	Location loc = getLocation();
 	ArrayList<Location> locs = getValid(loc);
+	int moveDirection;
 	if (locs.size() > 0) {
 	    next = selectMoveLocation(locs);
+	    moveDirection = getMoveDirection(loc, next);
+	    dirStep.put(moveDirection, dirStep.get(moveDirection) + 1);
 	    crossLocation.push(loc);
 	} else if (!crossLocation.empty()){
 	    next = crossLocation.peek();
+	    moveDirection = getMoveDirection(next, loc);
+	    dirStep.put(moveDirection, dirStep.get(moveDirection) - 1);
 	    crossLocation.pop();
 	} else {
 	    removeSelfFromGrid();
@@ -142,10 +153,39 @@ public class MazeBug extends Bug {
     }
     public Location selectMoveLocation(ArrayList<Location> locs)
     {
-	int n = locs.size();
-	if (n == 0)
-	    return getLocation();
-	int r = (int) (Math.random() * n);
-	return locs.get(r);
+	Location currenLocation = getLocation();
+	if (locs.size() == 0) {
+	    return currenLocation;
+	}
+	List <Map.Entry<Integer, Integer>> sortList = 
+	    new ArrayList<Map.Entry<Integer, Integer>>(dirStep.entrySet());
+	Collections.sort(sortList, new Comparator<Map.Entry<Integer, Integer>>() {
+		public int compare(Map.Entry<Integer, Integer> obj1, Map.Entry<Integer, Integer> obj2) {
+		    return obj2.getValue() - obj1.getValue();
+		}
+	    });
+	for (Map.Entry<Integer, Integer> entry : sortList) {
+	    for (Location loc : locs) {
+		int moveDirection = getMoveDirection(currenLocation, loc);
+		if (moveDirection == entry.getKey()) {
+		    return loc;
+		}
+	    }
+	   
+	}
+	System.out.println("no catch");
+	return currenLocation;
+    }
+    private int getMoveDirection(Location local, Location compare) {
+	int drow = local.getRow() - compare.getRow();
+	int dcol = local.getCol() - compare.getCol();
+	int result = -1;
+	//	System.out.println(local.getRow() + ":" + local.getCol());
+	//	System.out.println(compare.getRow() + ":" + local.getCol());
+	if (drow == 1 && dcol == 0) result =  Location.NORTH;
+	if (drow == 0 && dcol == -1) result =  Location.EAST;
+	if (drow == -1 && dcol == 0) result =  Location.SOUTH;
+	if (drow == 0 && dcol == 1) result =  Location.WEST;
+	return result;
     }
 }
