@@ -1,0 +1,27 @@
+<?xml version = "1.0"?>
+<project name = "MazeBug" default = "run" basedir = ".">
+  <description>run the mazeBug </description>
+  <property name = "src.dir" location = "mazeBug"/>
+  <property name = "lib.dir" location = "lib"/>
+  <property name = "build.dir" location = "build"/>
+  <path id = "compile.path">
+    <fileset dir = "${lib.dir}">
+      <include name = "**/*.jar"/>
+    </fileset>
+  </path>
+  
+  <target name = "init">
+    <delete dir = "${build.dir}"/>
+    <mkdir dir = "${build.dir}"/>
+  </target>
+
+  <target name = "run" depends = "init">
+    <javac srcdir = "${src.dir}" destdir = "${build.dir}" classpathref = "compile.path" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <java classname = "info.gridworld.maze.MazeBugRunner" fork = "true">
+      <classpath path = "${build.dir}"/>
+      <classpath refid = "compile.path"/>
+    </java>
+  </target>
+</project>

@@ -16,14 +16,13 @@ import java.util.Comparator;
 import java.util.List;  
 import java.util.Map;  
 import java.util.Map.Entry;  
-import java.util.HashMap; 
+import java.util.TreeMap; 
 public class MazeBug extends Bug {
     public Location next;
     public Location last;
     public boolean isEnd = false;
     public Stack<Location> crossLocation = new Stack<Location>();
     public Integer stepCount = 0;
-    private HashMap<Integer, Integer> dirStep;
     private boolean hasShown = false;//final message has been shown
     private HashSet<Location> hasVisited;
     /**
@@ -35,16 +34,12 @@ public class MazeBug extends Bug {
     public MazeBug() {
 	setColor(Color.GREEN);
 	hasVisited = new HashSet<Location>();
-	dirStep = new HashMap<Integer, Integer>();
-	for (int dir = 0 ; dir < Location.FULL_CIRCLE ; dir += Location.RIGHT) {
-	    dirStep.put(dir,1);
-	}
     }
 
     /**
      * Moves to the next location of the square.
      */
-    public void act() {
+    public void act() {	
 	hasVisited.add(getLocation());
 	boolean willMove = canMove();
 	if (isEnd == true) {
@@ -78,7 +73,7 @@ public class MazeBug extends Bug {
 	if (gr == null)
 	    return null;
 	int[] dirs = 
-	    {Location.LEFT, Location.RIGHT, Location.HALF_CIRCLE, Location.FULL_CIRCLE};
+	    {Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST};
 	for (int d : dirs) {
 	    Location neighborLoc = loc.getAdjacentLocation(getDirection() + d);
 	    if (gr.isValid(neighborLoc)) {
@@ -128,16 +123,11 @@ public class MazeBug extends Bug {
 	    return;
 	Location loc = getLocation();
 	ArrayList<Location> locs = getValid(loc);
-	int moveDirection;
 	if (locs.size() > 0) {
 	    next = selectMoveLocation(locs);
-	    moveDirection = getMoveDirection(loc, next);
-	    dirStep.put(moveDirection, dirStep.get(moveDirection) + 1);
 	    crossLocation.push(loc);
 	} else if (!crossLocation.empty()){
 	    next = crossLocation.peek();
-	    moveDirection = getMoveDirection(next, loc);
-	    dirStep.put(moveDirection, dirStep.get(moveDirection) - 1);
 	    crossLocation.pop();
 	} else {
 	    removeSelfFromGrid();
@@ -150,37 +140,11 @@ public class MazeBug extends Bug {
     }
     public Location selectMoveLocation(ArrayList<Location> locs)
     {
-	Location currenLocation = getLocation();
-	if (locs.size() == 0) {
-	    return currenLocation;
-	}
-	List <Map.Entry<Integer, Integer>> sortList = 
-	    new ArrayList<Map.Entry<Integer, Integer>>(dirStep.entrySet());
-	Collections.sort(sortList, new Comparator<Map.Entry<Integer, Integer>>() {
-		public int compare(Map.Entry<Integer, Integer> obj1, Map.Entry<Integer, Integer> obj2) {
-		    return obj2.getValue() - obj1.getValue();
-		}
-	    });
-	for (Map.Entry<Integer, Integer> entry : sortList) {
-	    for (Location loc : locs) {
-		int moveDirection = getMoveDirection(currenLocation, loc);
-		if (moveDirection == entry.getKey()) {
-		    return loc;
-		}
-	    }
-	   
-	}
-	System.out.println("no catch");
-	return currenLocation;
-    }
-    private int getMoveDirection(Location local, Location compare) {
-	int drow = local.getRow() - compare.getRow();
-	int dcol = local.getCol() - compare.getCol();
-	int result = -1;
-	if (drow == 1 && dcol == 0) result =  Location.NORTH;
-	if (drow == 0 && dcol == -1) result =  Location.EAST;
-	if (drow == -1 && dcol == 0) result =  Location.SOUTH;
-	if (drow == 0 && dcol == 1) result =  Location.WEST;
-	return result;
+	int n = locs.size();
+	if (n == 0) {
+	    return getLocation();
+	}    
+	int r = (int) (Math.random() * n);
+	return locs.get(r);
     }
 }

@@ -12,6 +12,8 @@
   <property name="framework.resources" 
 	    value="${framework.dir}/info/gridworld/gui/WorldFrameResources.properties" />
   <property name="maze.dir" value="projects/MazeBug"/>
+  <property name="mazev0.dir" value="projects/MazeBugV0"/>
+  <property name="mazev1.dir" value="projects/MazeBugV1"/>
   <path id = "compile.path">
     <fileset dir = "${lib.dir}">
       <include name = "**/*.jar"/>
@@ -21,7 +23,7 @@
     <tstamp>
       <format property="version.date" pattern="yyyy-MM-dd" locale="en"/>
     </tstamp>
-   <delete dir= "${build.dir}"/>
+    <delete dir= "${build.dir}"/>
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${dist.zip.dir}"/>
@@ -39,7 +41,7 @@
   </target>
 
   <target name="compile" depends="props">
-<javac srcdir="${maze.dir}" destdir="${build.dir}" classpathref="compile.path" debug="true" target="1.5">
+    <javac srcdir="${maze.dir}" destdir="${build.dir}" classpathref="compile.path" debug="true" target="1.5">
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
     <javac srcdir="${framework.dir}" destdir="${build.dir}" debug="true" target="1.5">
@@ -97,6 +99,46 @@
     <delete dir="${dist.dir}"/>
   </target>
   <target name="run-maze" depends="build-jar">
+    <java classname="info.gridworld.maze.MazeBugRunner" fork="true">
+      <classpath refid = "compile.path"/>
+      <classpath path="${build.dir}"/>
+    </java>
+  </target>
+  <target name="maze0" depends="build-jar">
+    <javac srcdir="${mazev0.dir}" destdir="${build.dir}" classpathref="compile.path" debug="true" target="1.5">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <javac srcdir="${framework.dir}" destdir="${build.dir}" debug="true" target="1.5">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <copy todir="${build.dir}">
+      <fileset dir="${framework.dir}">
+	<include name="**/*.gif"/>
+	<include name="**/*.properties"/>
+	<include name="**/*.html"/>
+      </fileset>
+    </copy>
+    <jar destfile="${lib.dir}/gridworld.jar" basedir="${build.dir}"/>
+    <java classname="info.gridworld.maze.MazeBugRunner" fork="true">
+      <classpath refid = "compile.path"/>
+      <classpath path="${build.dir}"/>
+    </java>
+  </target>
+  <target name="maze1" depends="build-jar">
+    <javac srcdir="${mazev1.dir}" destdir="${build.dir}" classpathref="compile.path" debug="true" target="1.5">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <javac srcdir="${framework.dir}" destdir="${build.dir}" debug="true" target="1.5">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <copy todir="${build.dir}">
+      <fileset dir="${framework.dir}">
+	<include name="**/*.gif"/>
+	<include name="**/*.properties"/>
+	<include name="**/*.html"/>
+      </fileset>
+    </copy>
+    <jar destfile="${lib.dir}/gridworld.jar" basedir="${build.dir}"/>
     <java classname="info.gridworld.maze.MazeBugRunner" fork="true">
       <classpath refid = "compile.path"/>
       <classpath path="${build.dir}"/>
