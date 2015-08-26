@@ -1,0 +1,34 @@
+<?xml version = "1.0"?>
+<project name = "N-Puzzle" default = "run-demo" basedir = ".">
+  <description>run the N-Puzzle </description>
+  <property name = "build.dir" location = "build"/>
+  <property name = "src.dir" location = "jigsaw"/>
+  <property name = "runnerSrc.dir" location = "Runners"/>
+  <target name = "init">
+    <delete dir = "${build.dir}"/>
+    <mkdir dir = "${build.dir}"/>
+  </target>
+  <target name = "compile" depends = "init">
+    <javac srcdir = "${src.dir}" destdir = "${build.dir}" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+    <javac srcdir = "${runnerSrc.dir}" destdir = "${build.dir}" includeantruntime = "true">
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+  </target>
+  <target name = "run-demo" depends = "compile">
+    <java classname = "Runners.RunnerDemo" fork = "true">
+      <classpath path = "${build.dir}"/>
+    </java>
+  </target>
+  <target name = "run1" depends = "compile">
+    <java classname = "Runners.RunnerPart1" fork = "true">
+      <classpath path = "${build.dir}"/>
+    </java>
+  </target>
+  <target name = "run2" depends = "compile">
+    <java classname = "Runners.RunnerPart2" fork = "true">
+      <classpath path = "${build.dir}"/>
+    </java>
+  </target>
+</project>
