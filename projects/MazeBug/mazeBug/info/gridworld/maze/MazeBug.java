@@ -35,6 +35,10 @@ public class MazeBug extends Bug {
     public MazeBug() {
 	setColor(Color.GREEN);
 	hasVisited = new HashSet<Location>();
+<<<<<<< HEAD
+=======
+	hasVisited.add(loc);
+>>>>>>> 6d52e19523d2f34a4354c93baaa07d71607b8021
 	dirStep = new HashMap<Integer, Integer>();
 	for (int dir = 0 ; dir < Location.FULL_CIRCLE ; dir += Location.RIGHT) {
 	    dirStep.put(dir,1);
